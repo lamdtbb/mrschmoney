@@ -59,9 +59,21 @@
     </div>
 
     <script>
-        const sessionId = Date.now().toString();
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
+
+        // Load chat history when page loads
+        window.onload = async function() {
+            try {
+                const response = await fetch('/history');
+                const data = await response.json();
+                data.conversation.forEach(msg => {
+                    addMessage(msg.content, msg.role === 'user' ? 'user' : 'bot');
+                });
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        };
 
         userInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -84,8 +96,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        message: message,
-                        session_id: sessionId
+                        message: message
                     }),
                 });
 
