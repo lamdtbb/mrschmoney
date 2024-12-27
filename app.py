@@ -118,7 +118,7 @@ Requirement:
     try:
         # Get response from OpenAI
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=messages,
             max_tokens=2000
         )
